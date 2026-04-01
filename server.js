@@ -79,6 +79,25 @@ io.on("connection", (socket) => {
     io.emit("pista", pistaActual);
   });
 });
+// Revelar todas las letras (NUEVO)
+socket.on("revelarTodo", () => {
+  // Extraer todas las letras únicas de la frase
+  const todasLasLetras = new Set();
+  frase.split("").forEach(letra => {
+    if (letra.match(/[A-Z]/)) { // Solo letras
+      todasLasLetras.add(letra);
+    }
+  });
+  
+  // Añadir todas las letras no reveladas aún
+  todasLasLetras.forEach(letra => {
+    if (!mostradas.includes(letra)) {
+      mostradas.push(letra);
+    }
+  });
+  
+  enviarEstado();
+});
 
 const PORT = process.env.PORT || 3000;
 http.listen(PORT, () => console.log(`Servidor listo en puerto ${PORT}`));
