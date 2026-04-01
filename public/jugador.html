@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Panel</title>
+
+<style>
+body {
+  background: #111;
+  color: white;
+  text-align: center;
+  font-family: Arial;
+}
+
+#panel {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 40px;
+}
+
+.casilla {
+  width: 60px;
+  height: 80px;
+  background: #222;
+  border: 2px solid #555;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vacia {
+  background: transparent;
+  border: none;
+}
+
+.letra {
+  background: #00ffcc;
+  color: black;
+  font-weight: bold;
+}
+
+#scores {
+  margin-top: 30px;
+  font-size: 24px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎡 PANEL</h1>
+
+<div id="panel"></div>
+
+<div id="scores">
+  👤 Jugador 1: <span id="p1">0</span> € |
+  👤 Jugador 2: <span id="p2">0</span> €
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+
+socket.on("estado", (data) => {
+  renderPanel(data.panel);
+  document.getElementById("p1").innerText = data.p1;
+  document.getElementById("p2").innerText = data.p2;
+});
+
+function renderPanel(panel) {
+  const contenedor = document.getElementById("panel");
+  contenedor.innerHTML = "";
+
+  panel.forEach(item => {
+    const div = document.createElement("div");
+
+    if (item === " ") {
+      div.className = "casilla vacia";
+    } else if (item === "_") {
+      div.className = "casilla";
+    } else {
+      div.className = "casilla letra";
+      div.innerText = item;
+    }
+
+    contenedor.appendChild(div);
+  });
+}
+</script>
+
+</body>
+</html>
