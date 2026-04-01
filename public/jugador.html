@@ -65,20 +65,23 @@ const pistaDiv = document.getElementById("pista");
 const p1Span = document.getElementById("p1");
 const p2Span = document.getElementById("p2");
 
-function actualizarPanel(panel) {
+function actualizarPanel(palabras) {
   panelDiv.innerHTML = "";
 
-  panel.forEach(l => {
-    if (l === " ") {
-      // Añadir un espacio de texto (no una casilla)
-      panelDiv.appendChild(document.createTextNode(" "));
-    } else {
-      // Crear casilla normal
+  palabras.forEach((palabra, i) => {
+    // Crear contenedor para cada palabra
+    const wordDiv = document.createElement("div");
+    wordDiv.style.display = "flex";   // casillas juntas dentro de la palabra
+    wordDiv.style.marginRight = "0.5cm"; // 0.5 cm entre palabras
+
+    for (const l of palabra) {
       const div = document.createElement("div");
       div.className = "cuadro";
       div.textContent = l;
-      panelDiv.appendChild(div);
+      wordDiv.appendChild(div);
     }
+
+    panelDiv.appendChild(wordDiv);
   });
 }
 
