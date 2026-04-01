@@ -17,6 +17,7 @@ h1 { color: #ffcc00; }
   flex-wrap: wrap;
   margin: 20px auto;
   max-width: 800px;
+  gap: 0.5cm;     /* 0.5 cm entre casillas */
 }
 .cuadro {
   width: 50px;
@@ -66,11 +67,18 @@ const p2Span = document.getElementById("p2");
 
 function actualizarPanel(panel) {
   panelDiv.innerHTML = "";
+
   panel.forEach(l => {
-    const div = document.createElement("div");
-    div.className = "cuadro";
-    div.textContent = l;
-    panelDiv.appendChild(div);
+    if (l === " ") {
+      // Añadir un espacio de texto (no una casilla)
+      panelDiv.appendChild(document.createTextNode(" "));
+    } else {
+      // Crear casilla normal
+      const div = document.createElement("div");
+      div.className = "cuadro";
+      div.textContent = l;
+      panelDiv.appendChild(div);
+    }
   });
 }
 
