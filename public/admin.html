@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8">
+<title>Ruleta - Admin</title>
+<style>
+body {
+  font-family: Arial;
+  background: #222;
+  color: #fff;
+  text-align: center;
+}
+input { font-size: 16px; padding: 5px; margin: 5px; width: 200px; }
+button { font-size: 16px; padding: 5px 10px; margin: 5px; }
+</style>
+</head>
 <body>
 
-<h1>🎛️ CONTROL</h1>
+<h1>🎛 Admin Ruleta</h1>
 
+<!-- Frase -->
 <h3>Frase</h3>
-<input id="frase" placeholder="Frase">
-<button onclick="nuevaFrase()">Crear</button>
+<input id="fraseInput" placeholder="Escribe la frase">
+<button onclick="enviarFrase()">Actualizar frase</button>
 
-<hr>
+<!-- Pista -->
+<h3>Pista</h3>
+<input id="pistaInput" placeholder="Escribe la pista">
+<button onclick="enviarPista()">Actualizar pista</button>
 
-<h3>Revelar letra</h3>
-<input id="letra" maxlength="1">
-<button onclick="revelar()">Revelar</button>
+<!-- Botones de letras -->
+<h3>Revelar Letra</h3>
+<input id="letraInput" placeholder="Letra">
+<button onclick="revelarLetra()">Revelar</button>
 
-<hr>
-
-<h3>Dinero manual</h3>
-<input id="cantidad" type="number" placeholder="Cantidad (€)">
-<br><br>
-<button onclick="sumar(1)">Jugador 1</button>
-<button onclick="sumar(2)">Jugador 2</button>
-
-<hr>
-
-<h3>Acciones rápidas</h3>
-
-<button onclick="consonante(1)">J1 Consonante (-25€)</button>
-<button onclick="vocal(1)">J1 Vocal (-50€)</button>
-
-<br><br>
-
-<button onclick="consonante(2)">J2 Consonante (-25€)</button>
-<button onclick="vocal(2)">J2 Vocal (-50€)</button>
+<!-- Botones de dinero -->
+<h3>Dinero</h3>
+Jugador 1: <button onclick="sumarDinero(1, 25)">+25€</button> <button onclick="sumarDinero(1, -25)">-25€</button><br>
+Jugador 2: <button onclick="sumarDinero(2, 25)">+25€</button> <button onclick="sumarDinero(2, -25)">-25€</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
 const socket = io();
 
-function nuevaFrase() {
-  socket.emit("nuevaFrase", document.getElementById("frase").value);
+function enviarFrase() {
+  const texto = document.getElementById("fraseInput").value;
+  socket.emit("nuevaFrase", texto);
 }
 
-function revelar() {
-  socket.emit("revelarLetra", document.getElementById("letra").value);
+function enviarPista() {
+  const texto = document.getElementById("pistaInput").value;
+  socket.emit("cambiarPista", texto);
 }
 
-function sumar(jugador) {
-  const cantidad = parseInt(document.getElementById("cantidad").value) || 0;
+function revelarLetra() {
+  const letra = document.getElementById("letraInput").value;
+  if(letra) socket.emit("revelarLetra", letra[0]);
+}
+
+function sumarDinero(jugador, cantidad) {
   socket.emit("sumarDinero", { jugador, cantidad });
-}
-
-function consonante(jugador) {
-  socket.emit("sumarDinero", { jugador, cantidad: -25 });
-}
-
-function vocal(jugador) {
-  socket.emit("sumarDinero", { jugador, cantidad: -50 });
 }
 </script>
 
