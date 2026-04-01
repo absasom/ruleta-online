@@ -44,6 +44,8 @@ function enviarEstado() {
 
 // Conexión de Socket.IO
 io.on("connection", (socket) => {
+  console.log("Admin/Jugador conectado"); // Debug
+  
   // Enviar estado y pista al conectarse
   enviarEstado();
 
@@ -65,6 +67,27 @@ io.on("connection", (socket) => {
     enviarEstado();
   });
 
+  // REVELAR TODO - ESTÁ DENTRO DEL SOCKET CONNECTION
+  socket.on("revelarTodo", () => {
+    console.log("Revelando todo el panel"); // Debug
+    // Extraer todas las letras únicas de la frase
+    const todasLasLetras = new Set();
+    frase.split("").forEach(letra => {
+      if (letra.match(/[A-Z]/)) { // Solo letras
+        todasLasLetras.add(letra);
+      }
+    });
+    
+    // Añadir todas las letras no reveladas aún
+    todasLasLetras.forEach(letra => {
+      if (!mostradas.includes(letra)) {
+        mostradas.push(letra);
+      }
+    });
+    
+    enviarEstado();
+  });
+
   // Sumar dinero
   socket.on("sumarDinero", (data) => {
     const { jugador, cantidad } = data;
@@ -78,25 +101,6 @@ io.on("connection", (socket) => {
     pistaActual = texto;
     io.emit("pista", pistaActual);
   });
-});
-// Revelar todas las letras (NUEVO)
-socket.on("revelarTodo", () => {
-  // Extraer todas las letras únicas de la frase
-  const todasLasLetras = new Set();
-  frase.split("").forEach(letra => {
-    if (letra.match(/[A-Z]/)) { // Solo letras
-      todasLasLetras.add(letra);
-    }
-  });
-  
-  // Añadir todas las letras no reveladas aún
-  todasLasLetras.forEach(letra => {
-    if (!mostradas.includes(letra)) {
-      mostradas.push(letra);
-    }
-  });
-  
-  enviarEstado();
 });
 
 const PORT = process.env.PORT || 3000;
