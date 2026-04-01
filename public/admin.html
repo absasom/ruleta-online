@@ -12,6 +12,19 @@ body {
 }
 input { font-size: 16px; padding: 5px; margin: 5px; width: 200px; }
 button { font-size: 16px; padding: 5px 10px; margin: 5px; }
+#revelarTodoBtn {
+  background: #ff4444;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#revelarTodoBtn:hover {
+  background: #cc3333;
+}
 </style>
 </head>
 <body>
@@ -32,6 +45,10 @@ button { font-size: 16px; padding: 5px 10px; margin: 5px; }
 <h3>Revelar Letra</h3>
 <input id="letraInput" placeholder="Letra">
 <button onclick="revelarLetra()">Revelar</button>
+
+<!-- NUEVO BOTÓN REVELAR TODO -->
+<h3>Panel Completo</h3>
+<button id="revelarTodoBtn" onclick="revelarTodo()">🔓 REVELAR TODO</button>
 
 <!-- Botones de dinero -->
 <h3>Dinero</h3>
@@ -64,6 +81,23 @@ function enviarPista() {
 function revelarLetra() {
   const letra = document.getElementById("letraInput").value;
   if(letra) socket.emit("revelarLetra", letra[0]);
+}
+
+// NUEVA FUNCIÓN: Revelar todas las letras únicas de la frase
+function revelarTodo() {
+  // Solicitar al servidor todas las letras únicas
+  socket.emit("revelarTodo");
+  
+  // Confirmación visual
+  const btn = document.getElementById("revelarTodoBtn");
+  const originalText = btn.textContent;
+  btn.textContent = "✅ REVELADO";
+  btn.style.background = "#44ff44";
+  
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = "#ff4444";
+  }, 2000);
 }
 
 function sumarDinero(jugador, cantidad) {
