@@ -36,7 +36,16 @@ button { font-size: 16px; padding: 5px 10px; margin: 5px; }
 <!-- Botones de dinero -->
 <h3>Dinero</h3>
 Jugador 1: <button onclick="sumarDinero(1, -25)">-25€</button> <button onclick="sumarDinero(1, -50)">-50€</button><br>
-Jugador 2: <button onclick="sumarDinero(2, 2-5)">-25€</button> <button onclick="sumarDinero(2, -50)">-50€</button>
+Jugador 2: <button onclick="sumarDinero(2, -25)">-25€</button> <button onclick="sumarDinero(2, -50)">-50€</button>
+
+<!-- CAMPO NUEVO PARA AÑADIR DINERO -->
+<h3>Añadir Dinero</h3>
+<input id="dineroInput" type="number" placeholder="Cantidad €">
+<select id="jugadorSelect">
+  <option value="1">Jugador 1</option>
+  <option value="2">Jugador 2</option>
+</select>
+<button onclick="anadirDineroPersonalizado()">Añadir</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -59,6 +68,15 @@ function revelarLetra() {
 
 function sumarDinero(jugador, cantidad) {
   socket.emit("sumarDinero", { jugador, cantidad });
+}
+
+function anadirDineroPersonalizado() {
+  const cantidad = parseInt(document.getElementById("dineroInput").value);
+  const jugador = parseInt(document.getElementById("jugadorSelect").value);
+  if (!isNaN(cantidad)) {
+    socket.emit("sumarDinero", { jugador, cantidad });
+    document.getElementById("dineroInput").value = "";
+  }
 }
 </script>
 
