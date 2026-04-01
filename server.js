@@ -23,7 +23,10 @@ let pistaActual = "";
 
 // Funciones del panel
 function generarPanel() {
-  return frase.split("").map(l => (l === " " ? " " : mostradas.includes(l) ? l : "_"));
+  return frase.split("").map(l => {
+    if (l === " ") return " ";                     // espacio literal
+    return mostradas.includes(l) ? l : "_";       // letra o guion
+  });
 }
 
 function enviarEstado() {
