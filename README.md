@@ -24,7 +24,7 @@
 23. X2
 24. Todas las vocales (consonante)
 ----------------------------------------------------------------------------------------------------------------------
-**PANELES EJEMPLO**
+**PANELES EJEMPLO + PANEL FINAL EJEMPLO**
 
 FRASE 1: MI PREVISION FAVORITA PARA EL FIN DE SEMANA
 PISTA 1: SOL RADIANTE
